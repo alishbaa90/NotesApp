@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .container{
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(135deg, #cf9aff, #95c0ff);
+            position: relative;
+            overflow: auto;
+        }
+        .container img{
+            position: absolute;
+            height: 120px;
+            top: 2%;
+            right: 90%;
+        }
+        .container h1{
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bolder;
+            font-size: 50px;
+            position: absolute;
+            top: 5%;
+            right: 69%;
+        }
+        .container button{
+            color: white;
+            background-color: rgb(109, 44, 109);
+            position: absolute;
+            top: 25%;
+            right:  83%;
+            height: 55px;
+            width: 180px;
+            border: none;
+            border-radius: 70px;
+        }
+        .container button img{
+            height: 35px;
+            width: 35px;
+            position: absolute;
+            right: 71%;
+            filter: invert(1);
+            top: 10%;
+        }
+        .container button p{
+            position: absolute;
+            right: 13%;
+            top: 30%;
+            font-size: 19px;
+        }
+        .container button:hover{
+            background-color: rgb(75, 37, 75);
+            cursor: pointer;
+        }
+      .input-box{
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        min-height: 150px;
+        background: #fff;
+        color: #333;
+        padding: 20px;
+        outline: none;
+        border-radius: 10px;
+        top: 250px;
+        left: 3%;
+        text-align: left;
+        margin: 4px;
+      }
+      .input-box img{
+        width: 15px;
+        height: 20px;
+        position: absolute;
+       bottom: 15px;
+       right: 15px;
+       cursor: pointer;
+       top: 80%; 
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="images/notes.webp" alt="Notes">
+        <h1>NOTES APP</h1>
+        <button class="btn">
+            <img src="images/create.webp" alt="Create">
+            <p>Create Note</p>
+        </button>
+        <!--<div class="box" id="noteBox">
+            <textarea placeholder="Start typing..."></textarea>
+            <img id="bin" src="images/bin2.webp" alt="Delete">
+        </div>-->
+        <div class="notes-container">
+          <!-- <p contenteditable="true" class="input-box">
+                <img src="images/bin2.webp">
+            </p>-->
+        </div>
+    </div>
+
+   <script>
+    const notesContainer = document.querySelector(".notes-container");
+const createbtn = document.querySelector(".btn");
+
+// Function to save the current state of notes to localStorage
+function saveData() {
+    localStorage.setItem("data", notesContainer.innerHTML);
+}
+
+function showData(){
+    notesContainer.innerHTML = localStorage.getItem("notes");
+}
+showData();
+
+// Event listener to handle note creation
+createbtn.addEventListener("click", () => {
+    let inputBox = document.createElement("p");
+    let img = document.createElement("img");
+    inputBox.className = "input-box";
+    inputBox.setAttribute("contenteditable", "true");
+    img.src = "images/bin2.webp";
+    inputBox.appendChild(img);
+    notesContainer.appendChild(inputBox).appendChild(img);
+    // Save data after adding a new note
+    saveData();
+});
+
+
+// Event delegation to handle the deletion of notes
+notesContainer.addEventListener("click", function(e) {
+    if (e.target.tagName === "IMG") {
+        e.target.parentElement.remove();
+        // Save data after deleting a note
+        saveData();
+    }
+    else if(e.target.tagName === "P"){
+        notes = document.querySelectorAll(".input-box");
+        notes.forEach(nt => {
+            nt.onkeyup = function(){
+                saveData();
+            }
+            
+        });
+    }
+});
+function saveData() {
+    localStorage.setItem("notes", notesContainer.innerHTML);
+}
+
+   </script>
+</body>
+</html>
